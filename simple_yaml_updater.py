@@ -1,5 +1,5 @@
 from string import strip
-import datetime
+
 
 def left_blank_count(line):
     count = 0
@@ -9,6 +9,7 @@ def left_blank_count(line):
         else:
             count += 1
     return count
+
 
 get_back = lambda x: ' '.join(x)
 
@@ -67,7 +68,8 @@ def seperate_yaml(to_move, file_location):
         prev_blank_count = ident_blank_count
     return origin_yaml, detached_yaml
 
-def update_yaml(to_update={}, file_location='starscream/conf/schedule.yml'):
+
+def update_yaml(to_update, file_location):
     new_yaml = []
     stack = []
     prev_blank_count, blanks_per_ident = 0, 2
@@ -104,13 +106,6 @@ def update_yaml(to_update={}, file_location='starscream/conf/schedule.yml'):
 
         prev_blank_count = ident_blank_count
     return new_yaml
-
-def time_arrangement(begin, length):
-    new_begin_times = []
-    for _ in xrange(length):
-        lag = _*10*60
-        new_begin_times.append((begin+datetime.timedelta(seconds=lag)).strftime('%H,%M,AM,UTC'))
-    return new_begin_times
 
 
 def move_task():
