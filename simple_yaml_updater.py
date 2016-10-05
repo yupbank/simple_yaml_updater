@@ -111,13 +111,19 @@ def update_yaml(to_update, file_location):
 def move_task():
     to_move = {'key_one', 'key_two'}
     origin_file_location = 'test.yml'
-    updated_origin_yaml, detached_yaml = seperate_yaml(to_update, origin_file_location)
+    updated_origin_yaml, detached_yaml = seperate_yaml(to_move, origin_file_location)
 
     with open('detached_origin.yml', 'w') as f:
         f.write('\n'.join(updated_origin_yaml))
 
     with open('detached.yml', 'w') as f:
         f.write('\n'.join(detached_yaml))
+
+    origin = yaml.load(open(origin_file_location))
+    new_origin = yaml.load('\n'.join(updated_origin_yaml))
+    detached = yaml.load('\n'.join(detached_yaml))
+    check_yaml(origin, new_origin, detached, to_move)
+
 
 def update_task():
     to_update = {'key_one.second_key': 'new_value', 'key_two.second_key.third_key': 'new_value'}
@@ -126,6 +132,20 @@ def update_task():
 
     with open('updated_origin.yml', 'w') as f:
         f.write('\n'.join(updated_origin_yaml))
+
+
+def check_yaml(origin, new_origin, detached, detached_keys):
+    all_key_exists_in_detached  = any(map(lambda x: x in detached, detached_keys))
+    assert all_key_exists_in_detached
+    all_key_in_new_origin = any(map(lambda x: x in new_origin, detached_keys))
+    assert not all_key_in_new_origin
+    all_value_the_same = lambda z: any(map(lambda x: x in origin and origin[x] == z[x], z))
+    all_value_the_same_in_new_origin = all_value_the_same(new_origin)
+    all_value_the_same_in_detached = all_value_the_same(detached)
+    assert all_value_the_same_in_new_origin
+    assert all_value_the_same_in_detached
+    missing_keys = set(origin.keys()) - set(new_origin.keys()+detached.keys())
+    assert not missing_keys
 
 def main():
     move_task()
