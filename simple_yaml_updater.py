@@ -1,5 +1,5 @@
 from string import strip
-
+import yaml
 
 def left_blank_count(line):
     count = 0
