@@ -57,7 +57,7 @@ def seperate_yaml(to_move, file_location):
             stack.pop()
             stack.append(line_key(line, ident_blank_count))
 
-        #change
+        #seperate
         top_key = stack[0]
         if top_key in to_move:
             previous_old = False
@@ -97,7 +97,7 @@ def update_yaml(to_update, file_location):
         if prev_blank_count == ident_blank_count:
             stack.pop()
             stack.append(line_key(line, ident_blank_count))
-        #change
+        #update
         current_key = '.'.join(stack)
         if current_key in to_update:
             line[-1] = to_update[current_key]            
