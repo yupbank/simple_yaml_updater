@@ -29,6 +29,9 @@ def seperate_yaml(to_move, file_location):
     stack = []
     prev_blank_count, blanks_per_ident = 0, 2
     for line in open(file_location):
+        if line.strip().startswith('#'):
+            origin_yaml.append(line.rstrip())
+            continue
         line = line.rstrip().split(' ')
         ident_blank_count = left_blank_count(line)
         if ident_blank_count == len(line):
